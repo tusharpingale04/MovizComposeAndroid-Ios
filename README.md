@@ -28,7 +28,7 @@ The app allows users to browse through trending movies and navigate to movie det
 
 To run the app locally, you need to have Android Studio & Xcode installed on your machine.
 
-Use [KDoctor](https://github.com/Kotlin/kdoctor) Use KDoctor to check if you have all things setup.
+Use [KDoctor](https://github.com/Kotlin/kdoctor) to check if you have all things setup.
 
 ## Contributing
 
