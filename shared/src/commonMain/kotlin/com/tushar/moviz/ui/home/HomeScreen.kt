@@ -24,8 +24,8 @@ import com.tushar.moviz.utils.statusBarPadding
 
 @Composable
 fun HomeScreen(
-    onMovieSelected: (Movie) -> Unit = {},
-    router: Router<AppNavigator>
+    router: Router<AppNavigator>,
+    onMovieSelected: (Movie) -> Unit = {}
 ) {
     val viewModel: HomeViewModel =
         rememberViewModel(HomeViewModel::class) { savedState -> HomeViewModel(savedState) }
@@ -34,14 +34,18 @@ fun HomeScreen(
 
     HomeContent(
         state = state.value,
-        onMovieSelected = onMovieSelected
+        onMovieSelected = onMovieSelected,
+        onRetryClick = {
+            viewModel.fetchMovies()
+        }
     )
 }
 
 @Composable
 fun HomeContent(
     state: HomeState,
-    onMovieSelected: (Movie) -> Unit = {}
+    onMovieSelected: (Movie) -> Unit = {},
+    onRetryClick: () -> Unit = {}
 ) {
     if (state.isLoading) {
         Box(Modifier.fillMaxSize()) {
@@ -49,6 +53,8 @@ fun HomeContent(
                 modifier = Modifier.align(Alignment.Center).size(24.dp)
             )
         }
+    } else if (state.isError) {
+        ErrorScreen(onRetryClick = onRetryClick)
     } else {
         val scaffoldState = rememberScaffoldState()
         Scaffold(
@@ -89,4 +95,32 @@ fun HomeContent(
         )
     }
 
+}
+
+@Composable
+fun ErrorScreen(onRetryClick: () -> Unit = {}) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Something went wrong. Please try again!",
+            textAlign = TextAlign.Center,
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth(),
+            fontWeight = FontWeight.Medium
+        )
+        Button(onClick = {
+            onRetryClick()
+        }, modifier = Modifier.padding(top = 16.dp).wrapContentSize()) {
+            Text(
+                text = "Retry",
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                modifier = Modifier.wrapContentSize(),
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
 }

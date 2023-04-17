@@ -7,7 +7,8 @@ import com.tushar.moviz.bean.Movie
 @Parcelize
 data class HomeState private constructor(
     val movies: List<Movie> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val isError: Boolean = false
 ): Parcelable {
     companion object {
         val initialState: HomeState

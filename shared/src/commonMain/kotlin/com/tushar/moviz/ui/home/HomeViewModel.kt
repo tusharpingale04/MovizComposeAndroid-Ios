@@ -27,15 +27,15 @@ class HomeViewModel(private val savedState: SavedStateHandle): ViewModel() {
         }
     }
 
-    private fun fetchMovies() {
+    fun fetchMovies() {
         launch(Dispatchers.Default) {
-            _state.update { it.copy(isLoading = true) }
+            _state.update { it.copy(isLoading = true, isError = false) }
             val result = webService.getTopMovies()
             _state.update { it.copy(isLoading = false) }
             if (result.isSuccess) {
                 _state.update { it.copy(movies = result.getOrNull()?.results ?: emptyList()) }
             } else if (result.isFailure) {
-                _state.update { it.copy(movies = emptyList()) }
+                _state.update { it.copy(isError = true) }
             }
         }
     }
